@@ -23,10 +23,62 @@ function App() {
     setAttempt(prevAttempt => prevAttempt + 1)
   }
 
+  const guessContainingChar = (): void => {
+    console.log('triggered')
+    const currentRow = rowsArray[attemptRef.current]
+    const wordOfTheDay = wordsArray[0]
+    let matchedLetters: string[] = [];
+    currentRow.forEach((letter) => {
+      if(wordOfTheDay.includes(letter)) {
+        matchedLetters.push(letter)
+      }
+    })
+    if(matchedLetters.length > 0) {
+        matchedLetters.forEach((letter) => {
+            let exactMatchIndexes: number[] = []
+            let partialMatchIndexes: number[] = []
+            for(let i = 0; i < currentRow.length; i++) {
+                if(currentRow[i] == letter && wordOfTheDay[i] == letter) {
+                  exactMatchIndexes.push(i)
+                } else if(currentRow[i] == letter && wordOfTheDay[i] !== letter){
+                  partialMatchIndexes.push(i)
+                }
+            }
+            const wordRowContainer = (document.getElementById(`wordrow${attemptRef.current + 1}`) as HTMLElement)
+            const childDivs = wordRowContainer.getElementsByTagName('div')
+            partialMatchIndexes.forEach((partialMatch) => {
+              const child = childDivs[partialMatch]
+              child.classList.add("yellow")
+            })
+            exactMatchIndexes.forEach((exactMatch) => {
+              const child = childDivs[exactMatch]
+              child.classList.add("green")
+            })
+        })
+    }
+  }
+
+  const validateSubmission = (): void => {
+    const currentRow = rowsArray[attempt]
+    const wordOfTheDay = wordsArray[0]
+    let guess = '';
+    currentRow.map((letter) => {
+        guess = guess + letter
+    })
+    guessContainingChar()
+    if(attempt <= 5 && guess === wordOfTheDay) {
+        console.log("winner!")
+    } else if(attempt < 6){
+        console.log("nope, try again")
+    } else {
+        console.log("Game over")
+    }
+}
+
   const handleSubmit = (e: any) => {
     const currentRow = rowsArray[attemptRef.current]
-    if(attempt < 5 && currentRow.length === 5) {
-        // validateSubmission()
+    if(attemptRef.current < 5 && currentRow.length === 5) {
+        validateSubmission()
         incrementAttempt()
     } else if(attempt === 5) {
         console.log("game over")
