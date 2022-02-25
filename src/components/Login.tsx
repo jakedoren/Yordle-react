@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, {useContext, useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { UserContext } from '../userContext'
+import { useGlobalContext } from '../userContext'
 
 interface login {
     username: string,
@@ -13,8 +13,8 @@ const Login = () => {
         username: '',
         password: ''
     })
-    // @ts-ignore
-    const isLoggedIn = useContext<boolean>(UserContext)
+
+    const {copy} = useGlobalContext()
     let navigate = useNavigate()
 
     const handleChange = (e: any) => {
@@ -43,7 +43,7 @@ const Login = () => {
 
   return (
     <form>
-        <h1>{isLoggedIn}</h1>
+        <h1>{copy}</h1>
         <p>hi</p>
         <input type="text" name='username' onChange={handleChange} />
         <input type="password" name='password' onChange={handleChange} />

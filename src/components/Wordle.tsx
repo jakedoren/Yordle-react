@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../userContext'
+// import { UserContext } from '../userContext'
 
 const Wordle = () => {
     const row1: string[] = []
@@ -14,7 +14,7 @@ const Wordle = () => {
     const [rowsArray, setRowsArray] = useState<Array<Array<string>>>([row1, row2, row3, row4, row5, row6]) 
     const [wordsArray, setWordsArray] = useState<string[]>(['betty', 'meggy'])
     const attemptRef = React.useRef(attempt);
-    const isLoggedIn = useContext(UserContext)
+    // const isLoggedIn = useContext(UserContext)
   
     const incrementAttempt = () => {
       attemptRef.current = attempt + 1
@@ -162,7 +162,7 @@ const Wordle = () => {
         <div id="app"></div>
   
       <div id="error"></div>
-      {isLoggedIn.toString()}
+      {/* {isLoggedIn.toString()} */}
     <div id="word-grid">
     
     <div className="grid-container" id="wordrow1">

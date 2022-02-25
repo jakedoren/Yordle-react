@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { Navigate, Outlet } from 'react-router-dom';
 import { getCookie } from './helpers/helper'
-import { UserContext } from './userContext';
+// import { UserContext } from './userContext';
 
 const ProtectedRoute = () => {
     // const [isLoading, setIsloading] = useState<boolean>(true)
@@ -34,17 +34,15 @@ const ProtectedRoute = () => {
     //     }
     // }, [])
 
-    const isLoggedIn = useContext(UserContext)
+    // const isLoggedIn = useContext(UserContext)
 
-    useEffect(() => {
-        console.log(isLoggedIn)
-    }, [])
+    // useEffect(() => {
+    //     console.log(isLoggedIn)
+    // }, [])
 
   return (
     <>
-        {!isLoggedIn ? 
-          <Navigate to="/login" /> : <Outlet />
-        }
+        <Outlet />
     </>
   ) 
 }
