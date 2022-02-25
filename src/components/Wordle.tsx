@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useGlobalContext } from '../userContext'
-// import { UserContext } from '../userContext'
+import React, { useEffect, useState } from 'react'
 
 const Wordle = () => {
     const row1: string[] = []
@@ -162,7 +160,6 @@ const Wordle = () => {
         <div id="app"></div>
   
       <div id="error"></div>
-      {/* {isLoggedIn.toString()} */}
     <div id="word-grid">
     
     <div className="grid-container" id="wordrow1">
