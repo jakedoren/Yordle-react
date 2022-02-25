@@ -1,4 +1,4 @@
-const getCookie = (name: string) => {
+const getCookie = (name: string): string | null => {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
@@ -9,4 +9,8 @@ const getCookie = (name: string) => {
     return null;
 }
 
-export {getCookie}
+const setCookie = (name: string, value: string): void => {
+  document.cookie = name + "=" + ("Bearer " + value || "") + "; path=/";
+}
+
+export {getCookie, setCookie}

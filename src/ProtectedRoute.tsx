@@ -1,48 +1,39 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { getCookie } from './helpers/helper'
-// import { UserContext } from './userContext';
+import { useGlobalContext } from './userContext';
 
 const ProtectedRoute = () => {
-    // const [isLoading, setIsloading] = useState<boolean>(true)
-    // const [isAuth, setIsAuth] = useState<boolean>(false)
+  const {isLoggedIn, setAuth} = useGlobalContext()
+  const [checkForCookie, setCheckForCookie] = useState<boolean>(true)
+  const navigate = useNavigate()
 
-    // useEffect(() => {
-    //     const authCookie = getCookie("yordle-auth")
-    //     if(authCookie) {
-    //         axios.get('http://localhost:8080/user/isloggedin', {
-    //             headers: {
-    //                 "authorization": authCookie
-    //             }
-    //         })
-    //         .then(res => {
-    //             if(res.status == 200 && res.data == true) {
-    //                 setIsAuth(true)
-    //             }
-    //         })
-    //         .then(() => {
-    //             setIsloading(false)
-    //         })
-    //         .catch(err => {
-    //             setIsAuth(false)
-    //             console.log(err)
-    //         })
-    //     } else {
-    //         setIsloading(false)
-    //         setIsAuth(false)
-    //     }
-    // }, [])
-
-    // const isLoggedIn = useContext(UserContext)
-
-    // useEffect(() => {
-    //     console.log(isLoggedIn)
-    // }, [])
+  useEffect(() => {
+    const authCookie = getCookie("yordle-auth")
+    if(!authCookie) {
+      setCheckForCookie(false)
+    } else if(!isLoggedIn) {
+      axios.get('http://localhost:8080/user/isloggedin', {
+        headers: {
+          "authorization": authCookie
+        }
+      })
+      .then(res => {
+        if(res.status == 200 && res.data == true) {
+          setAuth(true)
+        }
+      })
+      .catch(err => {
+        console.error(err)
+        navigate('/login')
+      })
+    }
+  }, [])
 
   return (
     <>
-        <Outlet />
+      {isLoggedIn ? <Outlet /> : checkForCookie ? <p>loading</p> : <Navigate to="/login" />}
     </>
   ) 
 }

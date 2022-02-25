@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, {useContext, useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../userContext'
+import { setCookie } from '../helpers/helper'
 
 interface login {
     username: string,
@@ -13,7 +14,6 @@ const Login = () => {
         username: '',
         password: ''
     })
-
     const {isLoggedIn, setAuth} = useGlobalContext()
     let navigate = useNavigate()
 
@@ -23,16 +23,12 @@ const Login = () => {
         })
     }
 
-    function setCookie(name: string, value: string) {
-        document.cookie = name + "=" + ("Bearer " + value || "") + "; path=/";
-    }
-
     const handleSubmit = (e: any) => {
         e.preventDefault()
         console.log(formInfo)
         axios.post("http://localhost:8080/user/authenticate", formInfo)
             .then(res => {
-                console.log(res.data.jwt)
+                setAuth(true)
                 setCookie("yordle-auth", res.data?.jwt)
                 navigate('/')
             })
@@ -44,7 +40,7 @@ const Login = () => {
   return (
     <form>
         <h1>{isLoggedIn.toString()}</h1>
-        <p onClick={() => setAuth(true)}>hi</p>
+        <p onClick={() => setAuth(!isLoggedIn)}>swap</p>
         <input type="text" name='username' onChange={handleChange} />
         <input type="password" name='password' onChange={handleChange} />
         <button onClick={handleSubmit}>login</button>
