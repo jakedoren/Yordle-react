@@ -11,7 +11,7 @@ import { MyGlobalContext } from './userContext';
 
 const App: React.FC = () => {
   // const [isLoading, setIsloading] = useState<boolean>(true)
-  const [copy, setCopy] = useState<string>('this is from context')
+  const [isLoggedIn, setAuth] = useState<boolean>(false)
 
   // useEffect(() => {
   //     const authCookie = getCookie("yordle-auth")
@@ -47,7 +47,7 @@ const App: React.FC = () => {
   return (
     <>
       {/* {isLoading ? <p>...loading</p> : */}
-        <MyGlobalContext.Provider value={{copy, setCopy}}>
+        <MyGlobalContext.Provider value={{isLoggedIn, setAuth}}>
           <Routes>
             <Route path='/login' element={<Login />} />
               <Route path='/' element={<ProtectedRoute />}>

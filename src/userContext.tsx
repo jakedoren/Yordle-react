@@ -1,10 +1,10 @@
 import { createContext, useContext } from "react"
 export type GlobalContent = {
-  copy: string
-  setCopy:(c: string) => void
+  isLoggedIn: boolean
+  setAuth:(c: boolean) => void
 }
 export const MyGlobalContext = createContext<GlobalContent>({
-copy: 'Hello World', // set a default value
-setCopy: () => {},
+isLoggedIn: false, // set a default value
+setAuth: () => {},
 })
 export const useGlobalContext = () => useContext(MyGlobalContext)

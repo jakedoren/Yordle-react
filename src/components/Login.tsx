@@ -14,7 +14,7 @@ const Login = () => {
         password: ''
     })
 
-    const {copy} = useGlobalContext()
+    const {isLoggedIn, setAuth} = useGlobalContext()
     let navigate = useNavigate()
 
     const handleChange = (e: any) => {
@@ -43,8 +43,8 @@ const Login = () => {
 
   return (
     <form>
-        <h1>{copy}</h1>
-        <p>hi</p>
+        <h1>{isLoggedIn.toString()}</h1>
+        <p onClick={() => setAuth(true)}>hi</p>
         <input type="text" name='username' onChange={handleChange} />
         <input type="password" name='password' onChange={handleChange} />
         <button onClick={handleSubmit}>login</button>
