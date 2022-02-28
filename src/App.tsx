@@ -12,6 +12,7 @@ const App: React.FC = () => {
   return (
     <>
       <MyGlobalContext.Provider value={{isLoggedIn, setAuth}}>
+        <h1>Hello {sessionStorage.getItem("username")}</h1>
         <Routes>
           <Route path='/login' element={<Login />} />
             <Route path='/' element={<ProtectedRoute />}>

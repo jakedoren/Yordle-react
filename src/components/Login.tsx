@@ -25,11 +25,11 @@ const Login = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        console.log(formInfo)
-        axios.post("http://localhost:8080/user/authenticate", formInfo)
+        axios.post(`${process.env.REACT_APP_USERSVC}/user/authenticate`, formInfo)
             .then(res => {
                 setAuth(true)
                 setCookie("yordle-auth", res.data?.jwt)
+                sessionStorage.setItem("username", res.data?.username)
                 navigate('/')
             })
             .catch(res => {

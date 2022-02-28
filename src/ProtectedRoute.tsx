@@ -14,7 +14,7 @@ const ProtectedRoute = () => {
     if(!authCookie) {
       setCheckForCookie(false)
     } else if(!isLoggedIn) {
-      axios.get('http://localhost:8080/user/isloggedin', {
+      axios.get(`${process.env.REACT_APP_USERSVC}/user/isloggedin`, {
         headers: {
           "authorization": authCookie
         }
