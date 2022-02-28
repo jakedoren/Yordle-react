@@ -15,6 +15,10 @@ const setCookie = (name: string, value: string): void => {
   document.cookie = name + "=" + ("Bearer " + value || "") + "; path=/";
 }
 
+function deleteCookie(name: string): void {   
+  document.cookie = name+'=; Max-Age=-99999999;';  
+}
+
 interface ICreateScore {
   username: string,
   attempts: number
@@ -26,4 +30,4 @@ const createScore = (req: ICreateScore): void => {
     .catch(err => console.error(err))
 }
 
-export {getCookie, setCookie, createScore}
+export { getCookie, setCookie, createScore, deleteCookie }

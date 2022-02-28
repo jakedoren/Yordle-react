@@ -10,15 +10,12 @@ const Wordle = () => {
   const row5: string[] = []
   const row6: string[] = []
   
-  
   const [attempt, setAttempt] = useState<number>(1)
   const [rowsArray, setRowsArray] = useState<Array<Array<string>>>([row1, row2, row3, row4, row5, row6]) 
   const [wordsArray, setWordsArray] = useState<string[]>(['betty', 'meggy'])
-  const attemptRef = React.useRef(attempt);
+  const attemptRef = React.useRef(attempt)
 
   const incrementAttempt = () => {
-    // attemptRef.current = attempt + 1
-    // console.log(attemptRef.current)
     setAttempt(prevAttempt => prevAttempt + 1)
   }
 
