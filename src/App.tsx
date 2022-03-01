@@ -7,6 +7,7 @@ import ProtectedRoute from './ProtectedRoute';
 import { MyGlobalContext } from './userContext';
 import DailyAttempt from './components/DailyAttempt';
 import Logout from './components/Logout';
+import Register from './components/Register';
 
 const App: React.FC = () => {
   const [isLoggedIn, setAuth] = useState<boolean>(false)
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Logout />
         <Routes>
           <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
             <Route path='/' element={<ProtectedRoute />}>
               <Route path='/' element={<DailyAttempt />} />
             </Route>

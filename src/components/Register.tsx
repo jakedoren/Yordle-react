@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, {useContext, useEffect, useState} from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../userContext'
 import { setCookie } from '../helpers/helper'
@@ -9,7 +9,7 @@ interface login {
     password: string
 }
 
-const Login = () => {
+const Register = () => {
     const [formInfo, setFormInfo] = useState<login>({
         username: '',
         password: ''
@@ -25,21 +25,19 @@ const Login = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        axios.post(`${process.env.REACT_APP_USERSVC}/user/authenticate`, formInfo)
+        axios.post(`${process.env.REACT_APP_USERSVC}/user/create`, formInfo)
             .then(res => {
                 setAuth(true)
                 setCookie("yordle-auth", res.data?.jwt)
                 sessionStorage.setItem("username", res.data?.username)
                 navigate('/')
             })
-            .catch(res => {
-                console.error(res)
-            })
+            .catch(err => console.error(err))
     }
 
   return (
     <form>
-        <h1>Login</h1>
+        <h1>Register</h1>
         <input type="text" name='username' onChange={handleChange} />
         <input type="password" name='password' onChange={handleChange} />
         <button onClick={handleSubmit}>login</button>
@@ -47,4 +45,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Register
