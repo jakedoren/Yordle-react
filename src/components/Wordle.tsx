@@ -55,23 +55,19 @@ const Wordle = () => {
         child.classList.add("green")
       })
     }
+    return data.correct
   }
   
-  const validateSubmission = (): void => {
-    const currentRow = rowsArray[attempt - 1]
-    const wordOfTheDay = wordsArray[0]
-    let guess = '';
-    currentRow.map((letter) => {
-        guess = guess + letter
-    })
-    guessContainingChar()
-    if(attempt <= 6 && guess === wordOfTheDay) {
-        createScore({
-          username: sessionStorage.getItem("username") || 'guest',
-          attempts: attempt
-        })
-        console.log("winner!")
-    } else if(attempt < 6){
+  const validateSubmission = async () => {
+    const correctGuess = await guessContainingChar()
+    console.log(correctGuess)
+    if(attemptRef.current <=6 && correctGuess) {
+      createScore({
+        username: sessionStorage.getItem("username") || 'guest',
+        attempts: attempt
+      })
+      console.log("winner!")
+    } else if(attemptRef.current < 6){
         console.log("nope, try again")
     } else {
         createScore({
