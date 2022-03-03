@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { createScore } from '../helpers/helper'
+import { leaderboardsvc } from '../helpers/requests'
 import Keyboard from './Keyboard'
+
+interface IError {
+  error: boolean,
+  message?: string
+}
 
 const Wordle = () => {
   const row1: string[] = []
@@ -14,6 +20,7 @@ const Wordle = () => {
   const [rowsArray, setRowsArray] = useState<Array<Array<string>>>([row1, row2, row3, row4, row5, row6]) 
   const [wordsArray, setWordsArray] = useState<string[]>(['betty', 'meggy'])
   const attemptRef = React.useRef(attempt)
+  const [error, setError] = useState<IError>({error: false, message: ''})
 
   const incrementAttempt = () => {
     setAttempt(prevAttempt => prevAttempt + 1)
@@ -23,37 +30,30 @@ const Wordle = () => {
     attemptRef.current = attempt
   }, [attempt])
   
-  const guessContainingChar = (): void => {
+  const guessContainingChar = async () => {
     const currentRow = rowsArray[attemptRef.current - 1]
-    const wordOfTheDay = wordsArray[0]
-    let matchedLetters: string[] = [];
-    currentRow.forEach((letter) => {
-      if(wordOfTheDay.includes(letter)) {
-        matchedLetters.push(letter)
-      }
-    })
-    if(matchedLetters.length > 0) {
-        matchedLetters.forEach((letter) => {
-            let exactMatchIndexes: number[] = []
-            let partialMatchIndexes: number[] = []
-            for(let i = 0; i < currentRow.length; i++) {
-                if(currentRow[i] == letter && wordOfTheDay[i] == letter) {
-                  exactMatchIndexes.push(i)
-                } else if(currentRow[i] == letter && wordOfTheDay[i] !== letter){
-                  partialMatchIndexes.push(i)
-                }
-            }
-            const wordRowContainer = (document.getElementById(`wordrow${attemptRef.current}`) as HTMLElement)
-            const childDivs = wordRowContainer.getElementsByTagName('div')
-            partialMatchIndexes.forEach((partialMatch) => {
-              const child = childDivs[partialMatch]
-              child.classList.add("yellow")
-            })
-            exactMatchIndexes.forEach((exactMatch) => {
-              const child = childDivs[exactMatch]
-              child.classList.add("green")
-            })
-        })
+    const wordRowContainer = (document.getElementById(`wordrow${attemptRef.current}`) as HTMLElement)
+    const childDivs = wordRowContainer.getElementsByTagName('div')
+    const guess = currentRow.join('')
+    const response = await leaderboardsvc.post(`leaderboard/guess?guess=${guess}`)
+    if(response.status !== 200) {
+      setError({error: true, message: 'Sorry, the service could not complete your request, please try again or come back later'})
+      return
+    }
+    const { data } = response
+    const partialMatches: number[] = data.matches.partialMatchIndexes
+    const exactMatches: number[] = data.matches.exactMatchIndexes
+    if(partialMatches) {
+      partialMatches.forEach((partialMatch) => {
+        const child = childDivs[partialMatch]
+        child.classList.add("yellow")
+      })
+    }
+    if(exactMatches) {
+      exactMatches.forEach((partialMatch) => {
+        const child = childDivs[partialMatch]
+        child.classList.add("green")
+      })
     }
   }
   
