@@ -60,7 +60,6 @@ const Wordle = () => {
   
   const validateSubmission = async () => {
     const correctGuess = await guessContainingChar()
-    console.log(correctGuess)
     if(attemptRef.current <=6 && correctGuess) {
       createScore({
         username: sessionStorage.getItem("username") || 'guest',

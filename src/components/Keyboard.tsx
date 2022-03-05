@@ -50,6 +50,22 @@ const Keyboard = ({ mapCharToRowArray, mapHtmlToWordInput, validateSubmission, i
       }
   }
 
+    useEffect(() => {
+    const keyBoard = document.getElementById('keyboard')
+    const keyElements = keyBoard?.getElementsByTagName('span')
+    if(keyElements && keyElements?.length) {
+      for(let i = 0; i < keyElements?.length; i++) {
+        const keyElement = keyElements[i]
+        keyElement.addEventListener("click", (e) => {
+            const element = (e.target as HTMLElement)
+            const key = element?.innerHTML
+            mapCharToRowArray(key)
+            mapHtmlToWordInput()
+        })
+      }
+    }
+  }, [])
+
   useEffect(() => {
     window.addEventListener("keyup", keyPressHandler)
   }, [])
