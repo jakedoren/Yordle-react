@@ -112,69 +112,12 @@ const Wordle = () => {
     child.innerHTML = currentRow[currentRow.length - 1].valueOf()
   }
   
-  useEffect(() => {
-    const keyBoard = document.getElementById('keyboard')
-    const keyElements = keyBoard?.getElementsByTagName('span')
-    if(keyElements && keyElements?.length) {
-      for(let i = 0; i < keyElements?.length; i++) {
-        const keyElement = keyElements[i]
-        keyElement.addEventListener("click", (e) => {
-            const element = (e.target as HTMLElement)
-            const key = element?.innerHTML
-            mapCharToRowArray(key)
-            mapHtmlToWordInput()
-        })
-      }
-    }
-  }, [])
-  
-  useEffect(() => {
-    window.addEventListener("keyup", (e) => {
-      const { key, keyCode} = e
-      if (keyCode >= 65 && keyCode <= 90) {
-      // Alphabet upper case
-          mapCharToRowArray(key.toLocaleLowerCase())
-          mapHtmlToWordInput()
-      } else if (keyCode >= 97 && keyCode <= 122) {
-          // Alphabet lower case
-          mapCharToRowArray(key)
-          mapHtmlToWordInput()
-      }
-      if(key === "Backspace") {
-          const currentRow = rowsArray[attemptRef.current - 1]
-          const wordRowContainer = (document.getElementById(`wordrow${attemptRef.current}`) as HTMLElement)
-          const childDivs = wordRowContainer.getElementsByTagName('div')
-          const lastChild = childDivs[currentRow.length - 1]
-          if(lastChild) {
-              lastChild.innerHTML = ''
-              currentRow.pop()
-          } 
-      }
-      if(key === "Enter") {
-          const currentRow = rowsArray[attemptRef.current - 1]
-          if(attemptRef.current < 6 && currentRow.length === 5) {
-              validateSubmission()
-              incrementAttempt()
-          } else if(attemptRef.current === 6) {
-              console.log("game Over")
-              createScore({
-                username: sessionStorage.getItem("username") || 'guest',
-                attempts: attempt
-              })
-          } else {
-              console.log("Must enter a five letter word before continuing towards your next guess")
-          }
-      }
-  })
-  }, [])
-  
   return (
     <div className="App">
       <div id="app"></div>
 
     <div id="error"></div>
   <div id="word-grid">
-  
   <div className="grid-container" id="wordrow1">
     <div className="grid-item"></div>
     <div className="grid-item"></div>
@@ -182,7 +125,6 @@ const Wordle = () => {
     <div className="grid-item"></div>
     <div className="grid-item"></div>
   </div>
-  
   <div className="grid-container" id="wordrow2">
     <div className="grid-item"></div>
     <div className="grid-item"></div>
@@ -190,7 +132,6 @@ const Wordle = () => {
     <div className="grid-item"></div>
     <div className="grid-item"></div>
   </div>
-
   <div className="grid-container" id="wordrow3">
     <div className="grid-item"></div>
     <div className="grid-item"></div>
@@ -198,7 +139,6 @@ const Wordle = () => {
     <div className="grid-item"></div>
     <div className="grid-item"></div>
   </div>
-
   <div className="grid-container" id="wordrow4">
     <div className="grid-item"></div>
     <div className="grid-item"></div>
@@ -206,7 +146,6 @@ const Wordle = () => {
     <div className="grid-item"></div>
     <div className="grid-item"></div>
   </div>
-
   <div className="grid-container" id="wordrow5">
     <div className="grid-item"></div>
     <div className="grid-item"></div>
@@ -214,7 +153,6 @@ const Wordle = () => {
     <div className="grid-item"></div>
     <div className="grid-item"></div>
   </div>
-
   <div className="grid-container" id="wordrow6">
     <div className="grid-item"></div>
     <div className="grid-item"></div>
@@ -223,8 +161,7 @@ const Wordle = () => {
     <div className="grid-item"></div>
   </div>
 </div>
-
-<Keyboard handleSubmit={handleSubmit}/>
+  <Keyboard handleSubmit={handleSubmit} mapCharToRowArray={mapCharToRowArray} mapHtmlToWordInput={mapHtmlToWordInput} validateSubmission={validateSubmission} incrementAttempt={incrementAttempt} attempt={attemptRef.current} rowsArray={rowsArray}/>
     </div>
   );
 }
