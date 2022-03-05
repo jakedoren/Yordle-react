@@ -73,6 +73,22 @@ describe('validate clicking/tapping on UIs keyboard', () => {
             userEvent.click(uiKeyboardChars[i])
             expect(childDivs[i].innerHTML).toBe(guessArray[i])
         }
-        debug()
+    })
+    it('goes through the wordle guess flow with UI keyboard and maps all characters to their respective grid box', () => {
+        const { debug, container } = render(<BrowserRouter><Wordle /></BrowserRouter>)
+        const gridContainers = container.getElementsByClassName('grid-container')
+        const enterBtn = container.getElementsByTagName('button')[0]
+        for(let i = 0; i < gridContainers.length; i++) {
+            const childDivs = gridContainers[i].getElementsByTagName('div')
+            const uiKeyboardChars = container.getElementsByTagName('span')
+            const guessArray = ['q', 'w', 'e', 'r', 't']
+            for(let i = 0; i < gridContainers.length; i++) {
+                userEvent.click(uiKeyboardChars[i])
+            }
+            guessArray.forEach((char, i) => {
+                expect(char).toBe(childDivs[i].innerHTML)
+            })
+            userEvent.click(enterBtn)
+        }
     })
 })
