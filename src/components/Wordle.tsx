@@ -80,7 +80,6 @@ const Wordle = () => {
 
   const mapCharToRowArray = (char: string): void => {
     const currentRow = rowsArray[attemptRef.current - 1]
-    console.log(rowsArray)
     if(currentRow.length < 5) {
       currentRow.push(char)
     } else {
