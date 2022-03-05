@@ -2,7 +2,6 @@ import { MouseEventHandler, useEffect } from 'react'
 import { createScore } from '../helpers/helper'
 
 interface IKeyboardProps {
-    handleSubmit: MouseEventHandler<HTMLButtonElement>,
     mapCharToRowArray: Function,
     mapHtmlToWordInput: Function,
     validateSubmission: Function,
@@ -11,11 +10,10 @@ interface IKeyboardProps {
     rowsArray: Array<Array<string>>
 }
 
-const Keyboard = ({ handleSubmit, mapCharToRowArray, mapHtmlToWordInput, validateSubmission, incrementAttempt, attempt, rowsArray }: IKeyboardProps) => {
+const Keyboard = ({ mapCharToRowArray, mapHtmlToWordInput, validateSubmission, incrementAttempt, attempt, rowsArray }: IKeyboardProps) => {
 
-  useEffect(() => {
-    window.addEventListener("keyup", (e) => {
-      const { key, keyCode} = e
+  const keyPressHandler = (e: any): void => {
+    const { key, keyCode} = e
       if (keyCode >= 65 && keyCode <= 90) {
       // Alphabet upper case
           mapCharToRowArray(key.toLocaleLowerCase())
@@ -50,8 +48,27 @@ const Keyboard = ({ handleSubmit, mapCharToRowArray, mapHtmlToWordInput, validat
               console.log("Must enter a five letter word before continuing towards your next guess")
           }
       }
-  })
+  }
+
+  useEffect(() => {
+    window.addEventListener("keyup", keyPressHandler)
   }, [])
+
+  const handleSubmit = (e: any) => {
+    const currentRow = rowsArray[attempt - 1]
+    if(attempt < 5 && currentRow.length === 5) {
+        validateSubmission()
+        incrementAttempt()
+    } else if(attempt === 6) {
+        console.log("game over")
+        createScore({
+          username: sessionStorage.getItem("username") || 'guest',
+          attempts: attempt
+        })
+    } else {
+      console.log("Must enter a 5 letter word")
+    }
+  }
 
   return (
     <div id="keyboard">

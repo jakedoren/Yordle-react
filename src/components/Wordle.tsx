@@ -77,22 +77,6 @@ const Wordle = () => {
         console.log("Game over")
     }
   }
-  
-  const handleSubmit = (e: any) => {
-    const currentRow = rowsArray[attemptRef.current - 1]
-    if(attemptRef.current < 5 && currentRow.length === 5) {
-        validateSubmission()
-        incrementAttempt()
-    } else if(attempt === 6) {
-        console.log("game over")
-        createScore({
-          username: sessionStorage.getItem("username") || 'guest',
-          attempts: attempt
-        })
-    } else {
-      console.log("Must enter a 5 letter word")
-    }
-  }
 
   const mapCharToRowArray = (char: string): void => {
     const currentRow = rowsArray[attemptRef.current - 1]
@@ -161,7 +145,7 @@ const Wordle = () => {
     <div className="grid-item"></div>
   </div>
 </div>
-  <Keyboard handleSubmit={handleSubmit} mapCharToRowArray={mapCharToRowArray} mapHtmlToWordInput={mapHtmlToWordInput} validateSubmission={validateSubmission} incrementAttempt={incrementAttempt} attempt={attemptRef.current} rowsArray={rowsArray}/>
+  <Keyboard mapCharToRowArray={mapCharToRowArray} mapHtmlToWordInput={mapHtmlToWordInput} validateSubmission={validateSubmission} incrementAttempt={incrementAttempt} attempt={attemptRef.current} rowsArray={rowsArray}/>
     </div>
   );
 }
