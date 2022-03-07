@@ -1,8 +1,22 @@
 import { render } from "@testing-library/react"
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from "react-router-dom"
-import Keyboard from "../components/Keyboard"
 import Wordle from "../components/Wordle"
+import { rest } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer(
+    rest.post('http://localhost:8080/leaderboard/guess?guess', (req, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json({ matches: { partialMatchIndexes: [0, 3], exactMatchIndexes: [1,2]}, correct: false })
+        )
+    })
+)
+
+beforeAll(() => server.listen())
+afterAll(() => server.close())
+afterEach(() => server.resetHandlers())
 
 describe('validates utilizing the keyboard to enter text', () => {
     it('enters character on the screen', async () => {
