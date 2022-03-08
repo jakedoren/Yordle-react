@@ -96,6 +96,7 @@ const Wordle = () => {
   
   return (
     <div className="App">
+      <h1>Yordle</h1>
       <div id="app"></div>
 
     <div id="error"></div>

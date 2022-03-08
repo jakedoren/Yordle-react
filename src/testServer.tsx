@@ -12,6 +12,12 @@ const server = setupServer(
         console.error(`Please add request handler for ${req.url.toString()}`),
         ctx.status(500),
         ctx.json({ error: "please add request handler"})
+    }),
+    rest.get('http://localhost:8080/leaderboard/attempted', (req, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json(true)
+        )
     })
 )
 
