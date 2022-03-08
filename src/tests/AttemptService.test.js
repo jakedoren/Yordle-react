@@ -3,6 +3,7 @@ import { validateAttemptService } from '../helpers/requests'
 import { server, rest } from '../testServer'
 import Wordle from '../components/Wordle'
 import userEvent from '@testing-library/user-event'
+import axios from 'axios'
 
 it('sends back guess', async () => {
     const res = await validateAttemptService('betty')
@@ -50,4 +51,10 @@ describe('it validates guess, and changes color of keys in guess according to ex
             expect(match.classList.contains('green')).toBe(true)
         })
     })
+})
+
+it('gets username and jwt', async() => {
+    const res = await axios.post(`${process.env.REACT_APP_USERSVC}/user/authenticate`, {username: "test", password: "password"})
+    expect(res.data.jwt).toBe('12345')
+    expect(res.data.username).toBe('john')
 })

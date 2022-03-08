@@ -7,6 +7,7 @@ import DailyAttempt from '../components/DailyAttempt'
 it('if user has attempted today, block them from continuing', async () => {
     const { debug, container, findByText } = render(<DailyAttempt />)
     const loadingText = await findByText('loading...')
+    waitFor(() => expect(loadingText).not.toBe(null))
     expect(loadingText).toContainHTML('loading...')
     const attmptedAlready = await findByText('Looks like you hava already attempted for the day, please come back tomorrow!')
     expect(attmptedAlready).not.toBe(null)

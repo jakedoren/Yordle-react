@@ -8,6 +8,12 @@ const server = setupServer(
             ctx.json({ matches: { partialMatchIndexes: [0, 3], exactMatchIndexes: [1,2]}, correct: false })
         )
     }),
+    rest.post(`${process.env.REACT_APP_USERSVC}/user/authenticate`, (req, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json({ jwt: '12345', username: 'john' })
+        )
+    }),
     rest.post("*", (req, res, ctx) => {
         console.error(`Please add request handler for ${req.url.toString()}`),
         ctx.status(500),
